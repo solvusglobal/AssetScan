@@ -123,27 +123,9 @@
             step: (state, bar) => {
               bar.path.setAttribute('stroke', state.color);
               var value = bar.value()
-              // if (value >= 0.71) {
-              //   // CRITICAL
-              //   bar.setText('FAILURE');
-              // } else if (value >= 0.41) {
-              //   // HIGH
-              //   bar.setText('BAD');
-              // } else if (value >= 0.21) {
-              //   // MEDIUM
-              //   bar.setText('POOR');
-              // } else if (value >= 0.01) {
-              //   // LOW
-              //   bar.setText('FAIR');
-              // } else {
-              //   bar.setText('');
-              // }
-              console.log(value);
               if (value <= 0.000001) {
                 bar.setText('')
-
               } else {
-                console.log("getting here")
                 var days = 10 - (Math.round(value * 10));
                 if (days === 1) {
                   bar.setText(days + " day")

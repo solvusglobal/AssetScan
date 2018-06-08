@@ -264,8 +264,6 @@ loadJSON(function(res) {
       if (val !== trueTTF) {
         trueTTF = val;
         // trueTTF is now updated!
-        // console.log(trueTTF +" days")
-        // console.log(1 - trueTTF/10);
         ttfCircle.animate(1 - trueTTF/10);
         // ttfLevel.
       }
@@ -310,7 +308,6 @@ loadJSON(function(res) {
               var hours = minutes/60;
               var days = Math.round(hours/24);
               manageTTFMeter(days);
-              // console.log("Days to Failure: " + days);
             }
 
 
