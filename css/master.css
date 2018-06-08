@@ -97,11 +97,16 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* background-color: #B0B2B1; */
+  border-radius: 3px;
+  border: 2px solid  #4B4B4B;
+  /* padding-left: 4rem;
+  padding-right: 3rem; */
 }
 
 .circle-meter {
   margin: 20px;
-  width: 10rem;
+  width: 11rem;
 }
 
 .line-meter {
@@ -122,25 +127,30 @@ header {
   /* margin-top: 3rem; */
 }
 
-.warning-container {
+.monitor-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #B0B2B1;
-  border-radius: 3px;
-  padding-left: 4rem;
-  padding-right: 3rem;
 }
 
-.warning-container h2 {
+.monitor-vertical-line {
+  width: 1px;
+  height: 80%;
+  background-color: gray;
+  margin-right: 2rem;
+  margin-left: 1rem;
+}
+
+.monitor-container h2 {
   /* margin-top: 3rem; */
   color: #4B4B4B;
   margin-right: 1rem;
   text-align: center;
 }
 
-.warning-container .progressbar-text {
+.monitor-container .progressbar-text {
   top: -6px !important;
+  text-align: center;
 }
 
 .warning-text p {

@@ -39,10 +39,14 @@
       </div>
       <div class="monitor">
         <!-- <div class="failMeter circle-meter"></div> -->
-        <div class="warning-container">
+        <div class="ttf-container monitor-container">
+          <h2>Estimated Time<br>to Failure</h2>
+          <div class="ttfText circle-meter"></div>
+        </div>
+        <div class="monitor-vertical-line"></div>
+        <div class="warning-container monitor-container">
           <h2>Asset <br>Condition</h2>
           <div class="warningCircleText circle-meter"></div>
-          </div>
         </div>
       </div>
     </header>
@@ -63,33 +67,6 @@
     </a>
   </body>
     <script type="text/javascript">
-      // var failMeter = new ProgressBar.SemiCircle(".failMeter", {
-      //   strokeWidth: 6,
-      //   color: '#FFEA82',
-      //   trailColor: '#eee',
-      //   trailWidth: 1,
-      //   easing: 'easeInOut',
-      //   duration: 1400,
-      //   svgStyle: null,
-      //   text: {
-      //     value: '',
-      //     alignToBottom: false
-      //   },
-      //   from: {color: '#FFEA82'},
-      //   to: {color: '#ED6A5A'},
-      //   // Set default step function for all animate calls
-      //   step: (state, bar) => {
-      //     bar.path.setAttribute('stroke', state.color);
-      //     var value = Math.round(bar.value() * 100);
-      //     if (value === 0) {
-      //       bar.setText('');
-      //     } else {
-      //       bar.setText(value);
-      //     }
-      //
-      //     bar.text.style.color = state.color;
-      //   }
-      // });
       var warningCircle = new ProgressBar.SemiCircle('.warningCircleText', {
           strokeWidth: 6,
           color: '#FFEA82',
@@ -128,6 +105,60 @@
         });
         warningCircle.text.style.fontFamily = '"Roboto", sans-serif';
         warningCircle.text.style.fontSize = '1.7rem';
+
+        var ttfCircle = new ProgressBar.SemiCircle('.ttfText', {
+            strokeWidth: 6,
+            color: '#FFEA82',
+            trailColor: '#4B4B4B',
+            trailWidth: 2,
+            easing: 'easeInOut',
+            duration: 1400,
+            svgStyle: null,
+            text: {
+            value: '',
+              alignToBottom: false
+            },
+            from: {color: '#FFEA82'},
+            to: {color: '#ED6A5A'},
+            step: (state, bar) => {
+              bar.path.setAttribute('stroke', state.color);
+              var value = bar.value()
+              // if (value >= 0.71) {
+              //   // CRITICAL
+              //   bar.setText('FAILURE');
+              // } else if (value >= 0.41) {
+              //   // HIGH
+              //   bar.setText('BAD');
+              // } else if (value >= 0.21) {
+              //   // MEDIUM
+              //   bar.setText('POOR');
+              // } else if (value >= 0.01) {
+              //   // LOW
+              //   bar.setText('FAIR');
+              // } else {
+              //   bar.setText('');
+              // }
+              console.log(value);
+              if (value <= 0.000001) {
+                bar.setText('')
+
+              } else {
+                console.log("getting here")
+                var days = 10 - (Math.round(value * 10));
+                if (days === 1) {
+                  bar.setText(days + " day")
+                } else if (days === 0) {
+                  days
+                  bar.setText("Today")
+                } else {
+                  bar.setText(days + " days")
+                }
+              }
+              bar.text.style.color = state.color;
+            }
+          });
+          ttfCircle.text.style.fontFamily = '"Roboto", sans-serif';
+          ttfCircle.text.style.fontSize = '1.7rem';
     </script>
     <!-- <script type="text/javascript" src="./js/plugin.js"></script> -->
     <script type="text/javascript" src="./js/chart.js"></script>

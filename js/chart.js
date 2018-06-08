@@ -184,7 +184,8 @@ var sliderChange;
 var resetButtonClick;
 
 loadJSON(function(res) {
-
+  loadJSONPred(function(resPred) {
+    var predJSONData = JSON.parse(resPred);
     var jsonData = JSON.parse(res);
 
     config.data.labels = jsonData.map(obj => {
@@ -199,12 +200,20 @@ loadJSON(function(res) {
     var indexOfTimeline = 0;
     var maxGs = -1;
     var warningLevel = 0.2;
+    var ttfLevel = 0.2;
+    var trueTTF = 7;
     var interval;
     var speedOfGraph = 110;
 
     function manageMaxGs(input) {
       if (input > maxGs) {
         maxGs = input;
+      }
+    }
+
+    function manageTTF(input) {
+      if (input !== trueTTF) {
+        trueTTF = input
       }
     }
 
@@ -219,6 +228,8 @@ loadJSON(function(res) {
       actualGs.data = [];
       myLineChart.update();
       warningCircle.animate(0);
+      ttfCircle.animate(0);
+      ttfCircle.text.innerText = '';
       warningCircle.text.innerText = '';
     }
 
@@ -237,22 +248,35 @@ loadJSON(function(res) {
         indexOfTimeline = 0;
         maxGs = -1;
         warningLevel = 0.2;
+        trueTTF = 7;
         actualPk.data = [];
         actualGs.data = [];
         myLineChart.update();
         warningCircle.animate(0);
+        ttfCircle.animate(0);
+        ttfCircle.text.innerText = '';
         warningCircle.text.innerText = '';
       });
 
     }
 
+    function manageTTFMeter(val) {
+      if (val !== trueTTF) {
+        trueTTF = val;
+        // trueTTF is now updated!
+        // console.log(trueTTF +" days")
+        // console.log(1 - trueTTF/10);
+        ttfCircle.animate(1 - trueTTF/10);
+        // ttfLevel.
+      }
+    }
+
+
     function manageWarningMeter() {
       var newLevel;
-      var text;
       if (maxGs >= 38) {
         // CRITICAL
         newLevel = 1;
-        // text = "CRITICAL";
       } else if (maxGs >= 28) {
         // HIGH
         newLevel = 0.7;
@@ -260,17 +284,13 @@ loadJSON(function(res) {
       } else if (maxGs >= 23) {
         // MEDIUM
         newLevel = 0.4;
-        // text = "MEDIUM";
       } else {
         // LOW
         newLevel = 0.1;
-        // text = "LOW";
       }
 
       if (newLevel !== warningLevel) {
         warningLevel = newLevel;
-        // warningCircleText.innerHTML=text;
-        // warningCircle.text.innerText = text;
         warningCircle.animate(warningLevel);
       }
     }
@@ -281,11 +301,17 @@ loadJSON(function(res) {
         if (runningSimulation) {
           interval = setInterval(function() {
 
-            // if (rangeSlider.value !== speedOfGraph) {
-            //   speedOfGraph = rangeSlider.value;
-            //   clearInterval(interval);
-            //   interval();
-            // }
+            var predObj = predJSONData[indexOfTimeline];
+            if (predObj == null) {
+
+            } else {
+              var step = predObj.ttf;
+              var minutes = Math.trunc(step) * 15;
+              var hours = minutes/60;
+              var days = Math.round(hours/24);
+              manageTTFMeter(days);
+              // console.log("Days to Failure: " + days);
+            }
 
 
 
@@ -320,4 +346,5 @@ loadJSON(function(res) {
       }
     }
 
+  });
 });
