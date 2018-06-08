@@ -94,7 +94,7 @@ var warningCircleText = document.getElementsByClassName("warningCircleText");
 var rangeSlider = document.getElementById("range-slider");
 
 var actualGs = {
-  label: 'G Force',
+  label: "Peak Fault (G's)"",
   xAxisID: "time-x",
   yAxisID: "G-y",
   borderColor: '#2196F3',
@@ -106,7 +106,7 @@ var actualGs = {
 }
 
 var actualPk = {
-  label: 'Pk',
+  label: 'Overall Vibration (in/sec)',
   xAxisID: "time-x",
   yAxisID: "Pk-y",
   borderColor: '#00874D',
