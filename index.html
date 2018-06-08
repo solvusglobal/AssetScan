@@ -29,6 +29,13 @@
             <span class="slider round"></span>
           </label>
         </div>
+        <div class="slider-container">
+          <p>Speed</p>
+          <input id="range-slider" type="range" min="1" max="110" name="range-slider" value="1" onChange="sliderChange(this.value)">
+        </div>
+        <div class="reset-button-container">
+          <button class="reset-button" onclick="resetButtonClick();" type="button" name="button">Reset</button>
+        </div>
       </div>
       <div class="monitor">
         <!-- <div class="failMeter circle-meter"></div> -->
@@ -100,19 +107,20 @@
           step: (state, bar) => {
             bar.path.setAttribute('stroke', state.color);
             var value = bar.value()
-            console.log(value);
-            if (value >= 1) {
+            if (value >= 0.71) {
               // CRITICAL
               bar.setText('FAILURE');
-            } else if (value >= 0.7) {
+            } else if (value >= 0.41) {
               // HIGH
               bar.setText('BAD');
-            } else if (value >= 0.4) {
+            } else if (value >= 0.21) {
               // MEDIUM
               bar.setText('POOR');
-            } else {
+            } else if (value >= 0.01) {
               // LOW
               bar.setText('FAIR');
+            } else {
+              bar.setText('');
             }
 
             bar.text.style.color = state.color;
@@ -120,7 +128,6 @@
         });
         warningCircle.text.style.fontFamily = '"Roboto", sans-serif';
         warningCircle.text.style.fontSize = '1.7rem';
-        console.log(warningCircle);
     </script>
     <!-- <script type="text/javascript" src="./js/plugin.js"></script> -->
     <script type="text/javascript" src="./js/chart.js"></script>

@@ -126,7 +126,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #BEBEBE;
+  background-color: #B0B2B1;
   border-radius: 3px;
   padding-left: 4rem;
   padding-right: 3rem;
@@ -173,6 +173,36 @@ header {
   margin-right: 10px;
   color: #707070;
 }
+
+
+.reset-button-container {
+  margin-top: 15px;
+}
+
+.reset-button {
+  outline: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #E74C3C;
+  border-radius: 3px;
+  border: 2px solid #E74C3C;
+  background-color: transparent;
+  -webkit-transition: .04s;
+  transition: .04s;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.reset-button:hover {
+  color: #F9F9F9;
+  background-color: #E74C3C;
+}
+
+.reset-button:active {
+  background-color: #C0392B;
+  border-color: #C0392B;
+}
+
 
 /* SLIDER */
 .switch {
@@ -231,6 +261,67 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+
+.slider-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.slider-container p {
+  margin-right: 10px;
+  margin-bottom: 4px;
+  font-size: 20px;
+  color: #707070;
+}
+
+input[type="range"]{
+  -webkit-appearance:none;
+  width:160px;
+  height:20px;
+  /* margin:10px 50px; */
+  background: linear-gradient(to right, #21DEF3 0%, #2196F3 100%);
+  background-size:150px 10px;
+  background-position:center;
+  background-repeat:no-repeat;
+  overflow:hidden;
+  outline: none;
+}
+
+input[type="range"]:first-of-type{
+  /* margin-top:30px; */
+}
+
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:20px;
+  height:20px;
+  background: #CCCCCC;
+  cursor: pointer !important;
+  border-radius: 10px;
+  position:relative;
+  z-index:3;
+  /* box-shadow:0 0 5px 0 rgba(0,0,0,0.3); */
+}
+
+input[type="range"]::-webkit-slider-thumb:after{
+  content:" ";
+  width:160px;
+  height:10px;
+  position:absolute;
+  z-index:1;
+  right:20px;
+  top:5px;
+  background: #ff5b32;
+  background: linear-gradient(to right, #f088fc 1%, #AC6CFF 70%);
+}
+
+
+
 
 .powered-container {
   padding-left: 2rem;

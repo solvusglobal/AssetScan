@@ -1,5 +1,4 @@
 function loadJSON(callback) {
-
    var xobj = new XMLHttpRequest();
        xobj.overrideMimeType("application/json");
    xobj.open('GET', '/data/trimed2.json', true); // Replace 'my_data' with the path to your file
@@ -12,8 +11,22 @@ function loadJSON(callback) {
    xobj.send(null);
 }
 
+function loadJSONPred(callback) {
+  var xobj = new XMLHttpRequest();
+      xobj.overrideMimeType("application/json");
+  xobj.open('GET', '/data/predictedTrimmed.json', true); // Replace 'my_data' with the path to your file
+  xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+          // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+          callback(xobj.responseText);
+        }
+  };
+  xobj.send(null);
+}
+
 var ctx = document.getElementById("graph").getContext('2d');
 var warningCircleText = document.getElementsByClassName("warningCircleText");
+var rangeSlider = document.getElementById("range-slider");
 
 var actualGs = {
   label: 'G Force',
@@ -62,13 +75,6 @@ for (var i = 0; i < 900; i++) {
   times.push(i);
 }
 
-// loadJSON(function(res) {
-//   var data = JSON.parse(res);
-//   times = data.map(obj => {
-//     return obj.time;
-//   })
-//   console.log(times.length);
-// });
 
 
 
@@ -174,99 +180,144 @@ var config = {
 		};
 
 var toggleSimulation;
+var sliderChange;
+var resetButtonClick;
 
 loadJSON(function(res) {
-  var jsonData = JSON.parse(res);
 
-  config.data.labels = jsonData.map(obj => {
+    var jsonData = JSON.parse(res);
 
-    return obj.time;
-  });
-  var myLineChart = new Chart(ctx, config);
+    config.data.labels = jsonData.map(obj => {
+
+      return obj.time;
+    });
+    var myLineChart = new Chart(ctx, config);
 
 
 
-  var runningSimulation = false;
-  var indexOfTimeline = 0;
-  var maxGs = -1;
-  var warningLevel = 0.2;
-  var interval;
+    var runningSimulation = false;
+    var indexOfTimeline = 0;
+    var maxGs = -1;
+    var warningLevel = 0.2;
+    var interval;
+    var speedOfGraph = 110;
 
-  function manageMaxGs(input) {
-    if (input > maxGs) {
-      maxGs = input;
-    }
-  }
-
-  function endOfSimulation() {
-    clearInterval(interval);
-    document.getElementById("switch").checked = true;
-    indexOfTimeline = 0;
-    maxGs = -1;
-    warningLevel = 0.2;
-    alertify
-    .alert("Simulation Finished!").setHeader('<em> Notice: </em> ');
-    actualPk.data = [];
-    actualGs.data = [];
-  }
-
-  function manageWarningMeter() {
-    var newLevel;
-    var text;
-    if (maxGs >= 30) {
-      // CRITICAL
-      newLevel = 1;
-      // text = "CRITICAL";
-    } else if (maxGs >= 25) {
-      // HIGH
-      newLevel = 0.7;
-      // text = "HIGH";
-    } else if (maxGs >= 20) {
-      // MEDIUM
-      newLevel = 0.4;
-      // text = "MEDIUM";
-    } else {
-      // LOW
-      newLevel = 0.1;
-      // text = "LOW";
+    function manageMaxGs(input) {
+      if (input > maxGs) {
+        maxGs = input;
+      }
     }
 
-    if (newLevel !== warningLevel) {
-      warningLevel = newLevel;
-      // warningCircleText.innerHTML=text;
-      // console.log(warningCircleText);
-      // warningCircle.text.innerText = text;
-      console.log(warningCircle);
-      warningCircle.animate(warningLevel);
-    }
-  }
-
-  toggleSimulation = function() {
-    runningSimulation =  !runningSimulation;
-    if (runningSimulation) {
-      interval = setInterval(function() {
-
-        var obj = jsonData[indexOfTimeline];
-        if (obj == null) {
-          endOfSimulation();
-        } else {
-          var time = obj.time;
-          var Pk = obj.Pk;
-          var Gs = obj.Gs;
-          // Finds if new value is max
-          manageMaxGs(Gs);
-          actualGs.data.push({x: time, y: Gs});
-          actualPk.data.push({x: time, y: Pk});
-          myLineChart.update();
-          manageWarningMeter();
-          indexOfTimeline++;
-        }
-      }, 40);
-    } else {
-      myLineChart.update();
+    resetButtonClick = function() {
       clearInterval(interval);
+      document.getElementById("switch").checked = false;
+      runningSimulation =  false;
+      indexOfTimeline = 0;
+      maxGs = -1;
+      warningLevel = 0.2;
+      actualPk.data = [];
+      actualGs.data = [];
+      myLineChart.update();
+      warningCircle.animate(0);
+      warningCircle.text.innerText = '';
     }
-  }
 
+    function endOfSimulation() {
+      clearInterval(interval);
+      // alertify
+      // .alert("Simulation Finished!").setHeader('<em> Notice: </em> ');
+      // alertify.confirm('Confirm Title', 'Confirm Message', function(){
+      //   alertify.success('Ok') }
+      //             , function(){ alertify.error('Cancel')});
+      alertify
+      .alert("Simulation Finished!", function(){
+        // alertify.message('OK');
+        document.getElementById("switch").checked = false;
+        runningSimulation =  false;
+        indexOfTimeline = 0;
+        maxGs = -1;
+        warningLevel = 0.2;
+        actualPk.data = [];
+        actualGs.data = [];
+        myLineChart.update();
+        warningCircle.animate(0);
+        warningCircle.text.innerText = '';
+      });
+
+    }
+
+    function manageWarningMeter() {
+      var newLevel;
+      var text;
+      if (maxGs >= 38) {
+        // CRITICAL
+        newLevel = 1;
+        // text = "CRITICAL";
+      } else if (maxGs >= 28) {
+        // HIGH
+        newLevel = 0.7;
+        // text = "HIGH";
+      } else if (maxGs >= 23) {
+        // MEDIUM
+        newLevel = 0.4;
+        // text = "MEDIUM";
+      } else {
+        // LOW
+        newLevel = 0.1;
+        // text = "LOW";
+      }
+
+      if (newLevel !== warningLevel) {
+        warningLevel = newLevel;
+        // warningCircleText.innerHTML=text;
+        // warningCircle.text.innerText = text;
+        warningCircle.animate(warningLevel);
+      }
+    }
+
+    toggleSimulation = function() {
+      // sliderChange = function(sliderValue) {
+        runningSimulation =  !runningSimulation;
+        if (runningSimulation) {
+          interval = setInterval(function() {
+
+            // if (rangeSlider.value !== speedOfGraph) {
+            //   speedOfGraph = rangeSlider.value;
+            //   clearInterval(interval);
+            //   interval();
+            // }
+
+
+
+            var obj = jsonData[indexOfTimeline];
+            if (obj == null) {
+              endOfSimulation();
+            } else {
+              var time = obj.time;
+              var Pk = obj.Pk;
+              var Gs = obj.Gs;
+              // Finds if new value is max
+              manageMaxGs(Gs);
+              actualGs.data.push({x: time, y: Gs});
+              actualPk.data.push({x: time, y: Pk});
+              myLineChart.update();
+              manageWarningMeter();
+              indexOfTimeline++;
+            }
+          }, speedOfGraph);
+        } else {
+          myLineChart.update();
+          clearInterval(interval);
+        }
+      // }
+    }
+
+    sliderChange = function(val) {
+      speedOfGraph = 111 - val ;
+      if (runningSimulation) {
+        toggleSimulation();
+        toggleSimulation();
+      }
+    }
 
 });
