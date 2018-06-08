@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Solvus Global</title>
+    <link rel="icon" sizes="192x192" href="./img/logo.png">
+    <!-- Alertify -->
+    <link rel="stylesheet" href="./css/alertify.css">
+    <script type="text/javascript" src="./js/alertify.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="./css/master.css">
+    <script src="./js/Chart.bundle.js"></script>
+    <script src="./js/progressbar.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="branding">
+        <div class="logo-container">
+          <img class="assetScanLogo" src="./img/assetscan-logo.png" alt="AssetScan Brand">
+          <!-- <h1>Solvus Global</h1>
+          <img class="logo" src="./img/logo.png" alt="Solvus Global Logo"> -->
+        </div>
+        <!-- <p>Data Visualization</p> -->
+        <div class="switch-container">
+          <p>Start/Stop</p>
+          <label class="switch">
+            <input id="switch" type="checkbox" onclick="toggleSimulation();" >
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="monitor">
+        <!-- <div class="failMeter circle-meter"></div> -->
+        <div class="warning-container">
+          <h2>Asset <br>Condition</h2>
+          <div class="warningCircleText circle-meter"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- <div id="graph"></div> -->
+    <div class="graph-outer-container">
+      <div class="graph-container">
+        <canvas id="graph" class="graph"></canvas>
+      </div>
+    </div>
+    <a href="http://www.solvusglobal.com/">
+      <div class="powered-container">
+        <p class="poweredBy">powered by</p>
+        <!-- <h4>Solvus Global</h4> -->
+        <div>
+          <img class="logo" src="./img/logo.png" alt="Solvus Global Logo">
+        </div>
+      </div>
+    </a>
+  </body>
+    <script type="text/javascript">
+      // var failMeter = new ProgressBar.SemiCircle(".failMeter", {
+      //   strokeWidth: 6,
+      //   color: '#FFEA82',
+      //   trailColor: '#eee',
+      //   trailWidth: 1,
+      //   easing: 'easeInOut',
+      //   duration: 1400,
+      //   svgStyle: null,
+      //   text: {
+      //     value: '',
+      //     alignToBottom: false
+      //   },
+      //   from: {color: '#FFEA82'},
+      //   to: {color: '#ED6A5A'},
+      //   // Set default step function for all animate calls
+      //   step: (state, bar) => {
+      //     bar.path.setAttribute('stroke', state.color);
+      //     var value = Math.round(bar.value() * 100);
+      //     if (value === 0) {
+      //       bar.setText('');
+      //     } else {
+      //       bar.setText(value);
+      //     }
+      //
+      //     bar.text.style.color = state.color;
+      //   }
+      // });
+      var warningCircle = new ProgressBar.SemiCircle('.warningCircleText', {
+          strokeWidth: 6,
+          color: '#FFEA82',
+          trailColor: '#4B4B4B',
+          trailWidth: 2,
+          easing: 'easeInOut',
+          duration: 1400,
+          svgStyle: null,
+          text: {
+          value: '',
+            alignToBottom: false
+          },
+          from: {color: '#FFEA82'},
+          to: {color: '#ED6A5A'},
+          step: (state, bar) => {
+            bar.path.setAttribute('stroke', state.color);
+            var value = bar.value()
+            console.log(value);
+            if (value >= 1) {
+              // CRITICAL
+              bar.setText('FAILURE');
+            } else if (value >= 0.7) {
+              // HIGH
+              bar.setText('BAD');
+            } else if (value >= 0.4) {
+              // MEDIUM
+              bar.setText('POOR');
+            } else {
+              // LOW
+              bar.setText('FAIR');
+            }
+
+            bar.text.style.color = state.color;
+          }
+        });
+        warningCircle.text.style.fontFamily = '"Roboto", sans-serif';
+        warningCircle.text.style.fontSize = '1.7rem';
+        console.log(warningCircle);
+    </script>
+    <!-- <script type="text/javascript" src="./js/plugin.js"></script> -->
+    <script type="text/javascript" src="./js/chart.js"></script>
+</html>
