@@ -94,7 +94,7 @@ var warningCircleText = document.getElementsByClassName("warningCircleText");
 var rangeSlider = document.getElementById("range-slider");
 
 var actualGs = {
-  label: "Peak Fault (G's)",
+  label: "Peak Fault",
   xAxisID: "time-x",
   yAxisID: "G-y",
   borderColor: '#2196F3',
@@ -106,7 +106,7 @@ var actualGs = {
 }
 
 var actualPk = {
-  label: 'Overall Vibration (in/sec)',
+  label: 'Overall Vibration',
   xAxisID: "time-x",
   yAxisID: "Pk-y",
   borderColor: '#00874D',
@@ -211,7 +211,7 @@ var config = {
             },
 						scaleLabel: {
 							display: true,
-							labelString: 'G Force',
+							labelString: "Peak Fault (G's)",
               fontSize: 15
 						},
             ticks: {
@@ -231,7 +231,7 @@ var config = {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Pk',
+              labelString: 'Overall Vibration (in/sec-Pk)',
               fontSize: 15
             },
             ticks: {
