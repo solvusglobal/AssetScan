@@ -1,3 +1,68 @@
+
+
+
+ttfCircle = new ProgressBar.SemiCircle('.ttfText', {
+    strokeWidth: 6,
+    color: '#FFEA82',
+    trailColor: '#4B4B4B',
+    trailWidth: 2,
+    easing: 'easeInOut',
+    duration: 1400,
+    svgStyle: null,
+    text: {
+    value: '',
+      alignToBottom: false
+    },
+    from: {color: '#FFEA82'},
+    to: {color: '#ED6A5A'},
+    step: (state, bar) => {
+      bar.path.setAttribute('stroke', state.color);
+      bar.setText('')
+      bar.text.style.color = state.color;
+    }
+  });
+  ttfCircle.text.style.fontFamily = '"Roboto", sans-serif';
+  ttfCircle.text.style.fontSize = '1.7rem';
+
+  ttfCircle.timeScale = "days";
+
+  ttfCircle._progressPath._opts.step = function(state, bar) {
+      bar.path.setAttribute('stroke', state.color);
+      var value = bar.value();
+      // var timeScale = this.timeScale;
+      // if (timeScale === "days") {
+      //   // days
+      // } else {
+      //   //hours
+      //
+      // }
+
+      bar.setText(ttfCircle.timeScale);
+
+
+
+
+
+      // var value = bar.value()
+      // if (value <= 0.000001) {
+      //   bar.setText('')
+      // } else {
+      //   var days = 10 - (Math.round(value * 10));
+      //   if (days === 1) {
+      //     bar.setText(days + " day")
+      //   } else if (days === 0) {
+      //     days
+      //     bar.setText("Today")
+      //   } else {
+      //     bar.setText(days + " days")
+      //   }
+      // }
+      // this.getTimeScale()
+      bar.text.style.color = state.color;
+  }
+
+
+
 function loadJSON(callback) {
    var xobj = new XMLHttpRequest();
        xobj.overrideMimeType("application/json");
@@ -194,8 +259,6 @@ loadJSON(function(res) {
     });
     var myLineChart = new Chart(ctx, config);
 
-
-
     var runningSimulation = false;
     var indexOfTimeline = 0;
     var maxGs = -1;
@@ -229,6 +292,7 @@ loadJSON(function(res) {
       myLineChart.update();
       warningCircle.animate(0);
       ttfCircle.animate(0);
+        ttfCircle.timeScale = '';
       ttfCircle.text.innerText = '';
       warningCircle.text.innerText = '';
     }
@@ -254,15 +318,16 @@ loadJSON(function(res) {
         myLineChart.update();
         warningCircle.animate(0);
         ttfCircle.animate(0);
+        ttfCircle.timeScale = '';
         ttfCircle.text.innerText = '';
         warningCircle.text.innerText = '';
       });
 
     }
 
-    function manageTTFMeter(val) {
-      if (val !== trueTTF) {
-        trueTTF = val;
+    function manageTTFMeter(hours) {
+      if (hours !== trueTTF) {
+        trueTTF = hours;
         // trueTTF is now updated!
         ttfCircle.animate(1 - trueTTF/10);
         // ttfLevel.
@@ -306,8 +371,18 @@ loadJSON(function(res) {
               var step = predObj.ttf;
               var minutes = Math.trunc(step) * 15;
               var hours = minutes/60;
-              var days = Math.round(hours/24);
-              manageTTFMeter(days);
+              var days = hours/24;
+              if (days > 2) {
+                ttfCircle.timeScale = Math.round(days) + " days"
+              } else {
+                hours = Math.trunc(hours);
+                if (hours <= 7) {
+                  ttfCircle.timeScale = 0 + " hours"
+                } else {
+                  ttfCircle.timeScale = hours + " hours"
+                }
+              }
+              manageTTFMeter(Math.round(days));
             }
 
 

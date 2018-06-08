@@ -25,13 +25,13 @@
         <div class="switch-container">
           <p>Start/Stop</p>
           <label class="switch">
-            <input id="switch" type="checkbox" onclick="toggleSimulation();" >
+            <input id="switch" type="checkbox" onclick="toggleSimulation();" />
             <span class="slider round"></span>
           </label>
         </div>
         <div class="slider-container">
           <p>Speed</p>
-          <input id="range-slider" type="range" min="1" max="110" name="range-slider" value="1" onChange="sliderChange(this.value)">
+          <input id="range-slider" type="range" min="1" max="110" name="range-slider" value="1" onChange="sliderChange(this.value)" />
         </div>
         <div class="reset-button-container">
           <button class="reset-button" onclick="resetButtonClick();" type="button" name="button">Reset</button>
@@ -106,41 +106,7 @@
         warningCircle.text.style.fontFamily = '"Roboto", sans-serif';
         warningCircle.text.style.fontSize = '1.7rem';
 
-        var ttfCircle = new ProgressBar.SemiCircle('.ttfText', {
-            strokeWidth: 6,
-            color: '#FFEA82',
-            trailColor: '#4B4B4B',
-            trailWidth: 2,
-            easing: 'easeInOut',
-            duration: 1400,
-            svgStyle: null,
-            text: {
-            value: '',
-              alignToBottom: false
-            },
-            from: {color: '#FFEA82'},
-            to: {color: '#ED6A5A'},
-            step: (state, bar) => {
-              bar.path.setAttribute('stroke', state.color);
-              var value = bar.value()
-              if (value <= 0.000001) {
-                bar.setText('')
-              } else {
-                var days = 10 - (Math.round(value * 10));
-                if (days === 1) {
-                  bar.setText(days + " day")
-                } else if (days === 0) {
-                  days
-                  bar.setText("Today")
-                } else {
-                  bar.setText(days + " days")
-                }
-              }
-              bar.text.style.color = state.color;
-            }
-          });
-          ttfCircle.text.style.fontFamily = '"Roboto", sans-serif';
-          ttfCircle.text.style.fontSize = '1.7rem';
+
     </script>
     <!-- <script type="text/javascript" src="./js/plugin.js"></script> -->
     <script type="text/javascript" src="./js/chart.js"></script>
