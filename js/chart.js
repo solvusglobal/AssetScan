@@ -94,7 +94,7 @@ var warningCircleText = document.getElementsByClassName("warningCircleText");
 var rangeSlider = document.getElementById("range-slider");
 
 var actualGs = {
-  label: "Peak Fault (G's)"",
+  label: "Peak Fault (G's)",
   xAxisID: "time-x",
   yAxisID: "G-y",
   borderColor: '#2196F3',
